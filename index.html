@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nuôi Thiện - Minh Bạch Tuyệt Đối</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;700;900&family=Playfair+Display:ital,wght@1,700&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <style>
+        body {
+            font-family: 'Lexend', sans-serif;
+            background-color: #f8fafc;
+            overflow-x: hidden;
+        }
+
+        h1,
+        h2,
+        h3 {
+            letter-spacing: -0.03em;
+        }
+
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.65);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.9);
+            box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.1);
+        }
+
+        .glass-card-hover {
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .glass-card-hover:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.85);
+            box-shadow: 0 20px 40px -5px rgba(37, 99, 235, 0.2);
+            border-color: #3b82f6;
+        }
+
+        #canvas-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .text-gradient {
+            background: linear-gradient(135deg, #2563eb 0%, #06b6d4 50%, #2563eb 100%);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shine 5s linear infinite;
+        }
+
+        @keyframes shine {
+            to {
+                background-position: 200% center;
+            }
+        }
+
+        .quote-font {
+            font-family: 'Playfair Display', serif;
+        }
+    </style>
+</head>
+
+<body class="text-slate-800 antialiased selection:bg-yellow-200 selection:text-yellow-900">
+
+
+    <div id="canvas-container"></div>
+
+
+    <nav class="fixed w-full z-50 transition-all duration-300 py-4" id="navbar">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="glass-panel rounded-full px-6 py-3 flex justify-between items-center">
+                <div class="flex items-center gap-2">
+                    <div
+                        class="w-8 h-8 bg-gradient-to-br from-blue-600 to-cyan-500 rounded-lg flex items-center justify-center text-white font-bold shadow-lg shadow-blue-500/30">
+                        NT</div>
+                    <span class="font-bold text-lg tracking-tight">Nuôi Thiện <span
+                            class="text-[10px] font-bold uppercase tracking-wider text-yellow-600 bg-yellow-100 px-2 py-0.5 rounded-full ml-1">Vjp
+                            pr0</span></span>
+                </div>
+                <div class="hidden md:flex space-x-8 font-medium text-sm text-slate-600">
+                    <a href="#dashboard" class="hover:text-blue-600 transition">Sao Kê Realtime</a>
+                    <a href="#board" class="hover:text-blue-600 transition">Hội Đồng Thành Viên</a>
+                    <a href="#tiers" class="hover:text-blue-600 transition">Gói Tài Trợ</a>
+                </div>
+                <a href="#donate"
+                    class="bg-slate-900 text-white px-6 py-2 rounded-full text-sm font-bold hover:bg-blue-600 transition shadow-lg hover:shadow-blue-500/30 ring-2 ring-white ring-offset-2 ring-offset-blue-500">
+                    Donate Ngay
+                </a>
+            </div>
+        </div>
+    </nav>
+
+
+    <section class="min-h-screen flex items-center justify-center pt-20 relative">
+        <div class="max-w-5xl mx-auto px-6 text-center z-10">
+            <div
+                class="inline-flex items-center gap-2 mb-6 px-4 py-1.5 rounded-full bg-yellow-50 border border-yellow-200 text-yellow-700 text-sm font-bold tracking-wide animate-bounce shadow-sm">
+                <i class="fa-solid fa-star text-yellow-500"></i> Dự án "Khởi Nghiệp" không đào lửa 🍑🔥
+            </div>
+            <h1 class="text-6xl md:text-8xl font-black mb-6 leading-[0.9] tracking-tight gs-reveal">
+                Minh Bạch Bạch<br>
+                <span class="text-gradient">Đến Từng Giọt Cà phê</span>
+            </h1>
+            <p class="text-xl md:text-2xl text-slate-500 mb-10 max-w-2xl mx-auto font-light gs-reveal">
+                Nền tảng gây quỹ nuôi chủ web đầu tiên trên thế giới ứng dụng công nghệ <span
+                    class="text-blue-600 font-bold bg-blue-50 px-1 rounded">"Sao Kê Chạy Bằng Cơm và Cà Phê"</span>.
+            </p>
+            <div class="flex flex-col md:flex-row justify-center gap-4 gs-reveal">
+                <a href="#donate"
+                    class="px-8 py-4 bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-xl font-bold text-lg shadow-xl shadow-blue-500/30 hover:scale-105 transition transform flex items-center justify-center gap-2 group">
+                    <span>Cứu Đói Khẩn Cấp</span> <i
+                        class="fa-solid fa-arrow-right group-hover:translate-x-1 transition"></i>
+                </a>
+                <a href="#audit"
+                    class="px-8 py-4 bg-white/80 backdrop-blur-md text-slate-700 border border-white rounded-xl font-bold text-lg hover:bg-white transition flex items-center justify-center gap-2 shadow-lg hover:shadow-xl">
+                    <i class="fa-solid fa-magnifying-glass-dollar text-slate-400"></i> Soi Sao Kê
+                </a>
+            </div>
+        </div>
+    </section>
+
+
+    <section id="dashboard" class="py-24 relative">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16 gs-reveal">
+                <h2 class="text-4xl font-bold mb-4">Dashboard Nghèo Realtime</h2>
+                <p class="text-slate-500">Dữ liệu được cập nhật từng mili-giây. Nhanh hơn cả tốc độ người yêu cũ trở
+                    mặt.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+
+                <div class="glass-panel p-6 rounded-2xl gs-reveal glass-card-hover">
+                    <div class="flex justify-between items-start mb-4">
+                        <div
+                            class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-green-600">
+                            <i class="fa-solid fa-wallet"></i>
+                        </div>
+                        <span class="text-xs font-bold bg-green-50 text-green-600 px-2 py-1 rounded">+0.0%</span>
+                    </div>
+                    <div class="text-slate-400 text-sm font-semibold uppercase tracking-wider mb-1">Tổng Tài Sản Hiện Có
+                    </div>
+                    <div class="text-4xl font-black text-slate-800">27.000 <span
+                            class="text-lg text-slate-400 font-normal">VNĐ</span></div>
+                    <div class="mt-2 text-sm text-slate-500">Đủ 1 ly cà phê sữa</div>
+                </div>
+
+                <div class="glass-panel p-6 rounded-2xl gs-reveal glass-card-hover">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center text-red-600"><i
+                                class="fa-solid fa-utensils"></i></div>
+                        <span
+                            class="text-xs font-bold bg-red-50 text-red-600 px-2 py-1 rounded animate-pulse">Critical</span>
+                    </div>
+                    <div class="text-slate-400 text-sm font-semibold uppercase tracking-wider mb-1">Chỉ Số Cháy Túi
+                    </div>
+                    <div class="text-4xl font-black text-red-500">92<span
+                            class="text-lg text-slate-400 font-normal">%</span></div>
+                    <div class="mt-2 text-sm text-slate-500">Khả năng đói rất cao</div>
+                </div>
+
+                <div class="glass-panel p-6 rounded-2xl gs-reveal glass-card-hover">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600">
+                            <i class="fa-solid fa-file-contract"></i>
+                        </div>
+                        <span class="text-xs font-bold bg-blue-50 text-blue-600 px-2 py-1 rounded">100% Real</span>
+                    </div>
+                    <div class="text-slate-400 text-sm font-semibold uppercase tracking-wider mb-1">Tỷ Lệ Sao Kê</div>
+                    <div class="text-4xl font-black text-blue-600">100<span
+                            class="text-lg text-slate-400 font-normal">%</span></div>
+                    <div class="mt-2 text-sm text-slate-500">Kê khai cả tiền gửi xe 2k</div>
+                </div>
+            </div>
+
+
+            <div class="glass-panel rounded-3xl overflow-hidden gs-reveal shadow-2xl">
+                <div
+                    class="px-8 py-6 border-b border-slate-200 flex flex-col md:flex-row justify-between items-center bg-white/40">
+                    <h3 class="font-bold text-lg flex items-center"><i
+                            class="fa-solid fa-clock-rotate-left mr-2 text-blue-600"></i> Lịch Sử Giao Dịch
+                    </h3>
+                    <div class="flex gap-2 mt-4 md:mt-0">
+                        <span class="w-3 h-3 rounded-full bg-red-500 animate-ping"></span>
+                        <span class="text-xs font-bold text-red-500">Đang cập nhật...</span>
+                    </div>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm text-slate-600">
+                        <thead class="bg-slate-50/80 text-xs uppercase font-bold text-slate-400">
+                            <tr>
+                                <th class="px-6 py-4">Thời gian</th>
+                                <th class="px-6 py-4">Hoạt động</th>
+                                <th class="px-6 py-4">Biến động SD</th>
+                                <th class="px-6 py-4">Ghi chú</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100 bg-white/20">
+                            <tr class="hover:bg-blue-50/30 transition duration-150">
+                                <td class="px-6 py-4 font-mono text-slate-400">Vừa xong</td>
+                                <td class="px-6 py-4 font-bold text-slate-800">Ly cà phê sữa ít sữa</td>
+                                <td class="px-6 py-4 text-slate-400">- 32.000 đ</td>
+                                <td class="px-6 py-4 italic">Mắc</td>
+                            </tr>
+                            <tr class="hover:bg-blue-50/30 transition duration-150">
+                                <td class="px-6 py-4 font-mono text-slate-400">07:30 AM</td>
+                                <td class="px-6 py-4 font-bold text-slate-800">Mua 1 ổ bánh mì</td>
+                                <td class="px-6 py-4 text-red-500 font-mono">- 15.000 đ</td>
+                                <td class="px-6 py-4"><span
+                                        class="bg-slate-100 px-2 py-1 rounded text-xs border border-slate-200">Đã chụp
+                                        ổ bánh mì</span></td>
+                            </tr>
+                            <tr class="hover:bg-blue-50/30 transition duration-150">
+                                <td class="px-6 py-4 font-mono text-slate-400">07:30 AM</td>
+                                <td class="px-6 py-4 font-bold text-slate-800">Gửi xe</td>
+                                <td class="px-6 py-4 text-red-500 font-mono">- 2.000 đ</td>
+                                <td class="px-6 py-4 text-slate-500">Vé xe số 283</td>
+                            </tr>
+                            <tr class="hover:bg-green-50/30 transition duration-150 bg-green-50/10">
+                                <td class="px-6 py-4 font-mono text-slate-400">07:00 AM</td>
+                                <td class="px-6 py-4 font-bold text-green-700">Đớp tiền cứu trợ</td>
+                                <td class="px-6 py-4 text-green-600 font-mono font-bold">+ 50.000 đ</td>
+                                <td class="px-6 py-4"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="audit" class="py-24 bg-white/50 relative">
+        <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            <div class="order-2 lg:order-1 gs-reveal">
+                <!-- Mockup File Excel -->
+                <div
+                    class="glass-panel p-2 rounded-xl shadow-2xl transform rotate-3 hover:rotate-0 transition duration-500">
+                    <div class="bg-white rounded-lg overflow-hidden border border-slate-200">
+                        <div class="bg-green-600 text-white text-xs px-4 py-2 font-mono flex justify-between">
+                            <span>Bao_Cao_Tai_Chinh_Full_HD_Khong_Che.xlsx</span>
+                            <span><i class="fa-solid fa-download"></i></span>
+                        </div>
+                        <div class="p-4 grid grid-cols-5 gap-2 opacity-50 text-[10px]">
+                            <div class="h-4 bg-slate-200 rounded col-span-1"></div>
+                            <div class="h-4 bg-slate-200 rounded col-span-4"></div>
+                            <div class="h-4 bg-slate-200 rounded col-span-1"></div>
+                            <div class="h-4 bg-slate-200 rounded col-span-4"></div>
+                            <div class="h-4 bg-slate-200 rounded col-span-1"></div>
+                            <div class="h-4 bg-slate-200 rounded col-span-4"></div>
+                            <div class="h-4 bg-slate-200 rounded col-span-1"></div>
+                            <div class="h-4 bg-slate-200 rounded col-span-4"></div>
+                        </div>
+                        <div class="p-8 text-center">
+                            <i class="fa-regular fa-file-excel text-6xl text-green-500 mb-4"></i>
+                            <h3 class="font-bold text-slate-800">File Excel Nặng 1GB</h3>
+                            <p class="text-xs text-slate-500">Chứa đựng tâm huyết và sự đói khát của tôi</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="order-1 lg:order-2 gs-reveal">
+                <h2 class="text-4xl font-bold mb-6">Cam Kết <span class="text-blue-600">3 KHÔNG</span></h2>
+                <div class="space-y-8">
+                    <div class="flex gap-4">
+                        <div
+                            class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 text-xl shrink-0">
+                            <i class="fa-solid fa-eye-slash"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-lg mb-1">Không Che Sao Kê</h3>
+                            <p class="text-slate-500 leading-relaxed">File Excel không che sao kê, zoom lên thấy cả vi
+                                khuẩn.
+                                Tuyệt đối không dùng bút xóa hay Photoshop.</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-4">
+                        <div
+                            class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center text-red-600 text-xl shrink-0">
+                            <i class="fa-solid fa-lock"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-lg mb-1">Không Khóa Comment</h3>
+                            <p class="text-slate-500 leading-relaxed">Mọi thắc mắc về việc "Tại sao hôm nay ăn 2 trứng?"
+                                đều sẽ được giải trình.</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-4">
+                        <div
+                            class="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center text-yellow-600 text-xl shrink-0">
+                            <i class="fa-solid fa-car-side"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-lg mb-1">Không Mua G63</h3>
+                            <p class="text-slate-500 leading-relaxed">Số tiền donate chỉ đủ mua xe đạp. Cam
+                                kết không xuất hiện tại showroom Mercedes.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="roadmap" class="py-24 relative overflow-hidden">
+        <div class="max-w-4xl mx-auto px-6 text-center">
+            <h2 class="text-4xl font-bold mb-12 gs-reveal">Kế Hoạch Giải Ngân <br><span
+                    class="text-slate-400 text-2xl font-light">(Nếu được Donate nhiều)</span></h2>
+
+            <div class="space-y-6 gs-reveal">
+                <!-- Bar 1 -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 relative overflow-hidden group">
+                    <div
+                        class="absolute top-0 left-0 h-full bg-yellow-50 w-[40%] transition-all duration-1000 group-hover:w-[45%]">
+                    </div>
+                    <div class="relative flex justify-between items-center z-10">
+                        <div class="flex items-center gap-4">
+                            <span
+                                class="w-10 h-10 bg-yellow-400 rounded-lg flex items-center justify-center text-white"><i
+                                    class="fa-solid fa-bowl-food"></i></span>
+                            <div class="text-left">
+                                <h4 class="font-bold text-slate-800">Nhu yếu phẩm (Mì, Trứng,Cà Phê)</h4>
+                                <p class="text-xs text-slate-500">Ưu tiên mì Hảo Hảo chua cay</p>
+                            </div>
+                        </div>
+                        <span
+                            class="font-black text-2xl text-slate-300 group-hover:text-yellow-500 transition">69%</span>
+                    </div>
+                </div>
+
+                <!-- Bar 2 -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 relative overflow-hidden group">
+                    <div
+                        class="absolute top-0 left-0 h-full bg-blue-50 w-[30%] transition-all duration-1000 group-hover:w-[35%]">
+                    </div>
+                    <div class="relative flex justify-between items-center z-10">
+                        <div class="flex items-center gap-4">
+                            <span
+                                class="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center text-white"><i
+                                    class="fa-solid fa-wifi"></i></span>
+                            <div class="text-left">
+                                <h4 class="font-bold text-slate-800">Cơ sở hạ tầng (Điện, Internet)</h4>
+                                <p class="text-xs text-slate-500">Để duy trì việc upload sao kê</p>
+                            </div>
+                        </div>
+                        <span class="font-black text-2xl text-slate-300 group-hover:text-blue-500 transition">11%</span>
+                    </div>
+                </div>
+
+                <!-- Bar 3 -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 relative overflow-hidden group">
+                    <div
+                        class="absolute top-0 left-0 h-full bg-green-50 w-[30%] transition-all duration-1000 group-hover:w-[35%]">
+                    </div>
+                    <div class="relative flex justify-between items-center z-10">
+                        <div class="flex items-center gap-4">
+                            <span
+                                class="w-10 h-10 bg-green-500 rounded-lg flex items-center justify-center text-white"><i
+                                    class="fa-solid fa-book-open"></i></span>
+                            <div class="text-left">
+                                <h4 class="font-bold text-slate-800">Đầu tư hiến máu cho AI</h4>
+                                <p class="text-xs text-slate-500">Để viết code xin donate xịn hơn</p>
+                            </div>
+                        </div>
+                        <span
+                            class="font-black text-2xl text-slate-300 group-hover:text-green-500 transition">20%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="board" class="py-24 relative overflow-hidden">
+        <div class="max-w-6xl mx-auto px-6">
+            <h2 class="text-4xl font-bold text-center mb-16 gs-reveal">Hội Đồng Quản Trị & Thẩm Định</h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+
+                <div class="glass-panel p-8 rounded-3xl flex items-center gap-6 gs-reveal glass-card-hover group">
+                    <div
+                        class="w-24 h-24 rounded-full bg-slate-200 overflow-hidden border-4 border-white shadow-lg shrink-0">
+                        <img src="https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?q=80&w=200&auto=format&fit=crop"
+                            class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-slate-800">Nhân vật hư cấu</h3>
+                        <p class="text-blue-600 text-sm font-bold uppercase mb-2">Chủ tịch Hội đồng</p>
+                        <p class="text-slate-500 text-sm italic">"Nhiệm vụ chính: Giám sát chủ web ăn uống, đảm bảo luôn
+                            đầy đủ ngày 2 cử cà phê."</p>
+                    </div>
+                </div>
+
+
+                <div class="glass-panel p-8 rounded-3xl flex items-center gap-6 gs-reveal glass-card-hover group">
+                    <div
+                        class="w-24 h-24 rounded-full bg-slate-200 overflow-hidden border-4 border-white shadow-lg shrink-0 flex items-center justify-center text-4xl text-slate-400 bg-slate-100">
+                        <i class="fa-solid fa-calculator"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-slate-800">Máy Tính Casio FX-570</h3>
+                        <p class="text-blue-600 text-sm font-bold uppercase mb-2">Giám đốc Tài chính</p>
+                        <p class="text-slate-500 text-sm italic">"Nhiệm vụ chính: Tính toán xem 50k sống được bao nhiêu
+                            ngày. Đã bị liệt phím số 9 do bấm giá mì hảo hảo quá nhiều."</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <section id="tiers" class="py-24 relative">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16 gs-reveal">
+                <h2 class="text-4xl font-bold mb-4">Các Gói Tài Trợ Đổi Đời</h2>
+                <p class="text-slate-500">Chọn gói phù hợp với ví tiền của bạn và dạ dày của tôi.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+
+                <div
+                    class="glass-panel p-8 rounded-[2rem] gs-reveal relative overflow-hidden group hover:border-green-400 transition-colors">
+                    <div
+                        class="absolute top-0 right-0 bg-green-100 text-green-700 text-xs font-bold px-3 py-1 rounded-bl-xl">
+                        Phổ biến nhất</div>
+                    <div
+                        class="w-14 h-14 rounded-2xl bg-green-50 text-green-600 flex items-center justify-center text-2xl mb-6 shadow-sm">
+                        <i class="fa-solid fa-leaf"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-2">Gói Thêm Hành</h3>
+                    <div class="text-4xl font-black text-slate-800 mb-6">5.000 <span
+                            class="text-sm font-normal text-slate-400">VNĐ</span></div>
+                    <p class="text-slate-500 text-sm mb-6 border-b border-dashed border-slate-300 pb-6">Đủ để tô mì tôm
+                        của tôi có thêm chút màu xanh hy vọng.</p>
+                    <ul class="space-y-3 text-sm text-slate-600 mb-8">
+                        <li class="flex items-center"><i class="fa-solid fa-check text-green-500 mr-2"></i> Được cảm ơn
+                            thầm lặng</li>
+                        <li class="flex items-center"><i class="fa-solid fa-check text-green-500 mr-2"></i> Không bị
+                            block</li>
+                    </ul>
+                    <a href="#donate"
+                        class="block w-full py-3 rounded-xl bg-green-50 text-green-700 font-bold text-center group-hover:bg-green-500 group-hover:text-white transition">Chọn
+                        Gói Này</a>
+                </div>
+
+
+                <div
+                    class="glass-panel p-8 rounded-[2rem] gs-reveal relative overflow-hidden group border-2 border-blue-400 transform md:-translate-y-4 shadow-2xl shadow-blue-200">
+                    <div
+                        class="absolute top-0 right-0 bg-blue-600 text-white text-xs font-bold px-3 py-1 rounded-bl-xl">
+                        Khuyên dùng</div>
+                    <div
+                        class="w-14 h-14 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center text-2xl mb-6 shadow-sm">
+                        <i class="fa-solid fa-egg"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-2">Gói Thêm Trứng</h3>
+                    <div class="text-4xl font-black text-slate-800 mb-6">10.000 <span
+                            class="text-sm font-normal text-slate-400">VNĐ</span></div>
+                    <p class="text-slate-500 text-sm mb-6 border-b border-dashed border-slate-300 pb-6">Nâng cấp bữa ăn
+                        lên tầm cao mới với 1 quả trứng gà công nghiệp.</p>
+                    <ul class="space-y-3 text-sm text-slate-600 mb-8">
+                        <li class="flex items-center"><i class="fa-solid fa-check text-blue-500 mr-2"></i> Được ghi lòng
+                            tạc dạ</li>
+                        <li class="flex items-center"><i class="fa-solid fa-check text-blue-500 mr-2"></i> Nhận 1 tim ảo
+                        </li>
+                        <li class="flex items-center"><i class="fa-solid fa-check text-blue-500 mr-2"></i> Video quay
+                            cận cảnh trứng</li>
+                    </ul>
+                    <a href="#donate"
+                        class="block w-full py-3 rounded-xl bg-blue-600 text-white font-bold text-center shadow-lg hover:bg-blue-700 transition">Donate
+                        Ngay</a>
+                </div>
+
+
+                <div
+                    class="glass-panel p-8 rounded-[2rem] gs-reveal relative overflow-hidden group hover:border-yellow-400 transition-colors">
+                    <div
+                        class="absolute top-0 right-0 bg-yellow-100 text-yellow-700 text-xs font-bold px-3 py-1 rounded-bl-xl">
+                        VIP PRO</div>
+                    <div
+                        class="w-14 h-14 rounded-2xl bg-yellow-50 text-yellow-600 flex items-center justify-center text-2xl mb-6 shadow-sm">
+                        <i class="fa-solid fa-crown"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold mb-2">Gói Thêm Xúc Xích</h3>
+                    <div class="text-4xl font-black text-slate-800 mb-6">20.000 <span
+                            class="text-sm font-normal text-slate-400">VNĐ</span></div>
+                    <p class="text-slate-500 text-sm mb-6 border-b border-dashed border-slate-300 pb-6">Có trứng thì
+                        phải có xúc xích.</p>
+                    <ul class="space-y-3 text-sm text-slate-600 mb-8">
+                        <li class="flex items-center"><i class="fa-solid fa-check text-yellow-500 mr-2"></i> Bao gồm gói
+                            thêmtrứng</li>
+                        <li class="flex items-center"><i class="fa-solid fa-check text-yellow-500 mr-2"></i> File Excel
+                            riêng tư</li>
+                        <li class="flex items-center"><i class="fa-solid fa-check text-yellow-500 mr-2"></i> Xếp sợi mì
+                            thành tên</li>
+                    </ul>
+                    <a href="#donate"
+                        class="block w-full py-3 rounded-xl bg-yellow-50 text-yellow-700 font-bold text-center group-hover:bg-yellow-500 group-hover:text-white transition">Đầu
+                        Tư Ngay</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <section class="py-24 bg-white/30">
+        <div class="max-w-4xl mx-auto px-6 text-center">
+            <h2 class="text-3xl font-bold mb-12 gs-reveal">Cộng Đồng Nói Gì Về Tôi?</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="glass-panel p-6 rounded-2xl text-left gs-reveal hover:scale-105 transition duration-300">
+                    <div class="flex gap-1 text-yellow-400 text-xs mb-3">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i
+                            class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i
+                            class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="italic text-slate-600 mb-4">"Mặc dù anh ấy nợ dai nhưng chưa từng giựt ai!"</p>
+                    <div class="font-bold text-sm text-slate-800">- Chủ nợ lâu năm</div>
+                </div>
+                <div class="glass-panel p-6 rounded-2xl text-left gs-reveal hover:scale-105 transition duration-300">
+                    <div class="flex gap-1 text-yellow-400 text-xs mb-3">
+                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i
+                            class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i
+                            class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="italic text-slate-600 mb-4">"Thằng này chuyên gia đóng trễ tiền trọ, nhưng nó gửi file
+                        giải trình chi tiết quá nên tôi cũng ngại đòi. 10 điểm trình bày."</p>
+                    <div class="font-bold text-sm text-slate-800">- Bà Chủ Trọ</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <section id="donate" class="py-24 relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-t from-blue-50 to-transparent z-0"></div>
+        <div class="max-w-3xl mx-auto px-6 relative z-10 text-center">
+            <h2 class="text-5xl font-black mb-4 gs-reveal">Donate Ngay <br> <span class="text-gradient">Cứu Lấy Cơn
+                    Ghiền Cà Phê Này</span></h2>
+            <p class="text-slate-500 mb-10 gs-reveal">Mọi đóng góp của bạn đều giúp thế giới bớt đi một lập trình viên
+                đói ăn.</p>
+
+            <div
+                class="glass-panel p-1 rounded-[2.5rem] inline-block shadow-2xl mb-10 gs-reveal hover:scale-105 transition duration-500 relative">
+
+                <div
+                    class="absolute -top-6 -right-6 w-16 h-16 bg-yellow-400 rounded-full flex items-center justify-center text-white font-bold shadow-lg animate-bounce z-20">
+                    Hot!
+                </div>
+
+                <div class="bg-white rounded-[2.3rem] p-8 md:p-12 relative overflow-hidden">
+                    <div
+                        class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-blue-700 via-teal-500 to-sky-500">
+                    </div>
+
+
+                    <div
+                        class="w-64 h-64 bg-slate-100 rounded-2xl mx-auto mb-8 relative overflow-hidden group shadow-inner">
+                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=ChucBanMotNgayVuiVe"
+                            alt="QR Code"
+                            class="w-full h-full object-cover mix-blend-multiply opacity-90 group-hover:opacity-100 transition">
+                        <div
+                            class="absolute inset-0 flex items-center justify-center bg-white/90 opacity-0 group-hover:opacity-100 transition duration-300 backdrop-blur-sm">
+                            <span class="text-blue-600 font-bold text-lg">Quét đi bạn ơi! <br> <span
+                                    class="text-xs font-normal text-slate-500">(Đừng suy nghĩ nhiều)</span></span>
+                        </div>
+                    </div>
+
+                    <div class="space-y-3">
+                        <p class="text-xs uppercase tracking-[0.2em] text-slate-400 font-bold">Ngân Hàng
+                        </p>
+                        <div class="flex items-center justify-center gap-2 bg-slate-50 p-3 rounded-xl border border-slate-100 hover:border-blue-300 transition cursor-pointer group"
+                            onclick="navigator.clipboard.writeText('2345678910jqka'); ">
+                            <span
+                                class="text-3xl font-mono font-black text-slate-800 tracking-tighter">2345678910jqka</span>
+                            <i class="fa-regular fa-copy text-slate-300 group-hover:text-blue-500 transition"></i>
+                        </div>
+                        <p class="font-bold text-blue-600">Chủ TK: PHAN THIEN</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex flex-col gap-4 items-center justify-center text-slate-500 text-sm gs-reveal">
+                <p class="quote-font text-lg italic text-slate-400">"Lá lành đùm lá rách, lá rách đùm lá nát, lá nát đùm
+                    lá te tua"</p>
+                <div class="flex gap-4 mt-2">
+                    <a href="#"
+                        class="w-12 h-12 rounded-full bg-white shadow-md text-blue-600 flex items-center justify-center hover:bg-blue-600 hover:text-white transition duration-300 hover:-translate-y-1"><i
+                            class="fa-brands fa-facebook-f"></i></a>
+                    <a href="#"
+                        class="w-12 h-12 rounded-full bg-white shadow-md text-black flex items-center justify-center hover:bg-black hover:text-white transition duration-300 hover:-translate-y-1"><i
+                            class="fa-brands fa-tiktok"></i></a>
+                    <a href="#"
+                        class="w-12 h-12 rounded-full bg-white shadow-md text-red-600 flex items-center justify-center hover:bg-red-600 hover:text-white transition duration-300 hover:-translate-y-1"><i
+                            class="fa-brands fa-youtube"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <footer class="py-12 border-t border-slate-200 text-center bg-white/60 backdrop-blur-md">
+        <div class="max-w-4xl mx-auto px-6">
+            <h4 class="font-bold text-slate-800 mb-4 flex items-center justify-center gap-2"><i
+                    class="fa-solid fa-triangle-exclamation text-yellow-500"></i> DISCLAIMER</h4>
+            <p class="text-xs text-slate-500 leading-relaxed max-w-2xl mx-auto mb-6">
+                Website này là sản phẩm của trí tưởng tượng phong phú và cái bụng đói và ghiền cà phê. Mọi cam kết minh
+                bạch đều là thật
+                (trong mơ).
+                Vui lòng không report website tội nghiệp. Tiền donate (nếu có) sẽ được dùng để mua mì tôm có trứng + cà
+                phê
+            </p>
+            <div class="text-[10px] uppercase tracking-widest text-slate-400">
+                © 2025 Nuôi Thiện Project. Designed with <i class="fa-solid fa-bolt text-yellow-400 animate-pulse"></i>
+                by a PHT.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const scene = new THREE.Scene();
+        scene.fog = new THREE.FogExp2(0xffffff, 0.02);
+
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.toneMapping = THREE.ACESFilmicToneMapping;
+        renderer.toneMappingExposure = 1.5;
+        document.getElementById('canvas-container').appendChild(renderer.domElement);
+
+        function createCoinTexture(symbol) {
+            const canvas = document.createElement('canvas');
+            canvas.width = 1024;
+            canvas.height = 1024;
+            const ctx = canvas.getContext('2d');
+
+            ctx.fillStyle = '#FFD700';
+            ctx.fillRect(0, 0, 1024, 1024);
+
+            ctx.beginPath();
+            ctx.arc(512, 512, 450, 0, Math.PI * 2);
+            ctx.lineWidth = 40;
+            ctx.strokeStyle = '#DAA520';
+            ctx.stroke();
+
+            ctx.font = 'bold 550px "Times New Roman", serif';
+            ctx.fillStyle = '#B8860B';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(symbol, 512, 532);
+
+            const imageData = ctx.getImageData(0, 0, 1024, 1024);
+            const data = imageData.data;
+            for (let i = 0; i < data.length; i += 4) {
+                const noise = (Math.random() - 0.5) * 15;
+                if (data[i + 3] > 0) {
+                    data[i] = Math.min(255, Math.max(0, data[i] + noise));
+                    data[i + 1] = Math.min(255, Math.max(0, data[i + 1] + noise));
+                    data[i + 2] = Math.min(255, Math.max(0, data[i + 2] + noise));
+                }
+            }
+            ctx.putImageData(imageData, 0, 0);
+
+            return new THREE.CanvasTexture(canvas);
+        }
+
+        const textureDollar = createCoinTexture('$');
+        const textureDong = createCoinTexture('₫');
+
+        textureDollar.anisotropy = 16;
+        textureDong.anisotropy = 16;
+
+        const goldParams = {
+            color: 0xffd700,
+            metalness: 0.98,
+            roughness: 0.25,
+        };
+
+        const matSide = new THREE.MeshStandardMaterial({ ...goldParams });
+
+        const matDollar = new THREE.MeshStandardMaterial({
+            ...goldParams,
+            map: textureDollar,
+            bumpMap: textureDollar,
+            bumpScale: 0.15
+        });
+
+        const matDong = new THREE.MeshStandardMaterial({
+            ...goldParams,
+            map: textureDong,
+            bumpMap: textureDong,
+            bumpScale: 0.15
+        });
+
+        const radius = 2.8;
+        const geometry = new THREE.CylinderGeometry(radius, radius, 0.25, 128, 1);
+
+        const posAttribute = geometry.attributes.position;
+        const uvAttribute = geometry.attributes.uv;
+        const normalAttribute = geometry.attributes.normal;
+
+        for (let i = 0; i < posAttribute.count; i++) {
+            const x = posAttribute.getX(i);
+            const y = posAttribute.getY(i);
+            const z = posAttribute.getZ(i);
+
+            const ny = normalAttribute.getY(i);
+
+            if (Math.abs(ny) > 0.5) {
+                let u = (x / radius) * 0.5 + 0.5;
+                const v = (z / radius) * 0.5 + 0.5;
+
+                if (ny < 0) {
+                    u = 1 - u;
+                }
+
+                uvAttribute.setXY(i, u, 1 - v);
+            }
+        }
+        geometry.attributes.uv.needsUpdate = true;
+
+        const materials = [matSide, matDollar, matDong];
+
+        const coin = new THREE.Mesh(geometry, materials);
+
+        coin.rotation.x = Math.PI / 2;
+
+        const rimGeometry = new THREE.TorusGeometry(radius, 0.15, 16, 100);
+        const rimMaterial = new THREE.MeshStandardMaterial({ color: 0xffcc00, metalness: 1.0, roughness: 0.2 });
+        const rim = new THREE.Mesh(rimGeometry, rimMaterial);
+
+        rim.rotation.x = Math.PI / 2;
+
+        coin.add(rim);
+        scene.add(coin);
+
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
+        scene.add(ambientLight);
+
+        const mainLight = new THREE.DirectionalLight(0xfff5b6, 3.5);
+        mainLight.position.set(5, 5, 10);
+        mainLight.castShadow = true;
+        scene.add(mainLight);
+
+        const rimLight = new THREE.SpotLight(0x60b0ff, 4.0);
+        rimLight.position.set(-10, 10, -5);
+        rimLight.lookAt(coin.position);
+        scene.add(rimLight);
+
+        const bounceLight = new THREE.PointLight(0xffaa00, 2.0);
+        bounceLight.position.set(0, -10, 5);
+        scene.add(bounceLight);
+
+        camera.position.z = 11;
+        coin.position.x = 3.5;
+
+        let mouseX = 0;
+        let mouseY = 0;
+
+        window.addEventListener('mousemove', (event) => {
+            mouseX = (event.clientX / window.innerWidth) * 2 - 1;
+            mouseY = (event.clientY / window.innerHeight) * 2 - 1;
+        });
+
+        const clock = new THREE.Clock();
+
+        function animate() {
+            requestAnimationFrame(animate);
+            const elapsedTime = clock.getElapsedTime();
+            const scrollY = window.scrollY;
+
+            const targetZ = (elapsedTime * 0.2) + (scrollY * 0.005);
+            coin.rotation.z = targetZ;
+
+            const targetY = (scrollY * 0.002) + (mouseX * 0.5);
+            coin.rotation.y += (targetY - coin.rotation.y) * 0.05;
+
+            const targetX = (Math.PI / 2) + (mouseY * 0.3);
+            coin.rotation.x += (targetX - coin.rotation.x) * 0.05;
+
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        window.addEventListener('scroll', () => {
+            const scrollY = window.scrollY;
+            const docHeight = document.body.scrollHeight - window.innerHeight;
+            const scrollPercent = scrollY / docHeight;
+
+            let newX = 3.5;
+            if (scrollPercent > 0.15 && scrollPercent < 0.45) newX = -3.5;
+            else if (scrollPercent >= 0.45 && scrollPercent < 0.75) newX = 3.5;
+            else if (scrollPercent >= 0.75) newX = 0;
+
+            const newY = -(scrollPercent * 3);
+
+            gsap.to(coin.position, {
+                x: newX,
+                y: newY,
+                duration: 1.2,
+                ease: "power2.out"
+            });
+
+
+            const scale = scrollPercent > 0.8 ? 1.5 : 1;
+            gsap.to(coin.scale, {
+                x: scale,
+                y: scale,
+                z: scale,
+                duration: 1
+            });
+        });
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        const revealElements = document.querySelectorAll('.gs-reveal');
+        revealElements.forEach(element => {
+            gsap.fromTo(element,
+                { opacity: 0, y: 30 },
+                {
+                    opacity: 1,
+                    y: 0,
+                    duration: 0.8,
+                    ease: "back.out(1.7)",
+                    scrollTrigger: {
+                        trigger: element,
+                        start: "top 90%",
+                        toggleActions: "play none none reverse"
+                    }
+                }
+            );
+        });
+    </script>
+</body>
+
+</html>

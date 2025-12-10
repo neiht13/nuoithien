@@ -17,6 +17,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
 
     <style>
         body {
@@ -100,11 +101,12 @@
                 </div>
                 <div class="hidden md:flex space-x-8 font-medium text-sm text-slate-600">
                     <a href="#dashboard" class="hover:text-blue-600 transition">Sao Kê Realtime</a>
+                    <a href="#commitment" class="hover:text-blue-600 transition">Cam kết</a>
                     <a href="#board" class="hover:text-blue-600 transition">Hội Đồng Thành Viên</a>
                     <a href="#tiers" class="hover:text-blue-600 transition">Gói Tài Trợ</a>
                 </div>
                 <a href="#donate"
-                    class="bg-slate-900 text-white px-6 py-2 rounded-full text-sm font-bold hover:bg-blue-600 transition shadow-lg hover:shadow-blue-500/30 ring-2 ring-white ring-offset-2 ring-offset-blue-500">
+                    class="hidden sm:flex bg-slate-900 text-white px-6 py-2 rounded-full text-sm font-bold hover:bg-blue-600 transition shadow-lg hover:shadow-blue-500/30 ring-2 ring-white ring-offset-2 ring-offset-blue-500">
                     Donate Ngay
                 </a>
             </div>
@@ -161,8 +163,9 @@
                     </div>
                     <div class="text-slate-400 text-sm font-semibold uppercase tracking-wider mb-1">Tổng Tài Sản Hiện Có
                     </div>
-                    <div class="text-4xl font-black text-slate-800">27.000 <span
-                            class="text-lg text-slate-400 font-normal">VNĐ</span></div>
+                    <div class="text-4xl font-black text-slate-800"><span class="anime-count"
+                            data-target="27000">0</span> <span class="text-lg text-slate-400 font-normal">VNĐ</span>
+                    </div>
                     <div class="mt-2 text-sm text-slate-500">Đủ 1 ly cà phê sữa</div>
                 </div>
 
@@ -175,8 +178,8 @@
                     </div>
                     <div class="text-slate-400 text-sm font-semibold uppercase tracking-wider mb-1">Chỉ Số Cháy Túi
                     </div>
-                    <div class="text-4xl font-black text-red-500">92<span
-                            class="text-lg text-slate-400 font-normal">%</span></div>
+                    <div class="text-4xl font-black text-red-500"><span class="anime-count"
+                            data-target="92">0</span><span class="text-lg text-slate-400 font-normal">%</span></div>
                     <div class="mt-2 text-sm text-slate-500">Khả năng đói rất cao</div>
                 </div>
 
@@ -188,8 +191,8 @@
                         <span class="text-xs font-bold bg-blue-50 text-blue-600 px-2 py-1 rounded">100% Real</span>
                     </div>
                     <div class="text-slate-400 text-sm font-semibold uppercase tracking-wider mb-1">Tỷ Lệ Sao Kê</div>
-                    <div class="text-4xl font-black text-blue-600">100<span
-                            class="text-lg text-slate-400 font-normal">%</span></div>
+                    <div class="text-4xl font-black text-blue-600"><span class="anime-count"
+                            data-target="100">0</span><span class="text-lg text-slate-400 font-normal">%</span></div>
                     <div class="mt-2 text-sm text-slate-500">Kê khai cả tiền gửi xe 2k</div>
                 </div>
             </div>
@@ -216,7 +219,7 @@
                                 <th class="px-6 py-4">Ghi chú</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-slate-100 bg-white/20">
+                        <tbody class="divide-y divide-slate-100 bg-white/20 anime-table-body">
                             <tr class="hover:bg-blue-50/30 transition duration-150">
                                 <td class="px-6 py-4 font-mono text-slate-400">Vừa xong</td>
                                 <td class="px-6 py-4 font-bold text-slate-800">Ly cà phê sữa ít sữa</td>
@@ -711,6 +714,48 @@
             bumpScale: 0.15
         });
 
+        const countElements = document.querySelectorAll('.anime-count');
+        const countObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const el = entry.target;
+                    const target = parseInt(el.getAttribute('data-target'));
+                    anime({
+                        targets: el,
+                        innerHTML: [0, target],
+                        round: 1,
+                        easing: 'easeInOutExpo',
+                        duration: 2000,
+                        update: function (anim) {
+                            if (target === 27000) {
+                                el.innerHTML = anim.animations[0].currentValue.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+                            }
+                        }
+                    });
+                    countObserver.unobserve(el);
+                }
+            });
+        }, { threshold: 0.5 });
+        countElements.forEach(el => countObserver.observe(el));
+
+        const tableObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    anime({
+                        targets: '.anime-table-body tr',
+                        translateY: [20, 0],
+                        opacity: [0, 1],
+                        delay: anime.stagger(100),
+                        easing: 'spring(1, 80, 10, 0)'
+                    });
+                    tableObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.2 });
+        const tableBody = document.querySelector('.anime-table-body');
+        if (tableBody) tableObserver.observe(tableBody);
+
+
         const radius = 2.8;
         const geometry = new THREE.CylinderGeometry(radius, radius, 0.25, 128, 1);
 
@@ -836,23 +881,54 @@
             renderer.setSize(window.innerWidth, window.innerHeight);
         });
 
-        const revealElements = document.querySelectorAll('.gs-reveal');
-        revealElements.forEach(element => {
-            gsap.fromTo(element,
-                { opacity: 0, y: 30 },
-                {
-                    opacity: 1,
-                    y: 0,
-                    duration: 0.8,
-                    ease: "back.out(1.7)",
-                    scrollTrigger: {
-                        trigger: element,
-                        start: "top 90%",
-                        toggleActions: "play none none reverse"
-                    }
-                }
-            );
+
+
+        // Anime.js Scroll Progress Bar
+        const progressBar = document.createElement('div');
+        Object.assign(progressBar.style, {
+            position: 'fixed',
+            top: '0',
+            left: '0',
+            height: '4px',
+            height: '5px',
+            background: 'linear-gradient(90deg, #2563eb 0%, #06b6d4 100%)', // Blue to Cyan gradient
+            zIndex: '9999',
+            width: '0%',
+            boxShadow: '0 0 10px rgba(37, 99, 235, 0.5)'
         });
+        document.body.appendChild(progressBar);
+
+        window.addEventListener('scroll', () => {
+            const scrollPercent = window.scrollY / (document.body.scrollHeight - window.innerHeight);
+            // Use direct style for performant scroll update or short anime
+            progressBar.style.width = `${scrollPercent * 100}%`;
+        });
+
+
+        // Anime.js Section Reveals (Replacing GSAP)
+        const revealElements = document.querySelectorAll('.gs-reveal');
+
+        // Hide initially
+        revealElements.forEach(el => el.style.opacity = '0');
+
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    anime({
+                        targets: entry.target,
+                        translateY: [100, 0], // Increased distance
+                        scale: [0.8, 1], // Added scale effect
+                        opacity: [0, 1],
+                        duration: 1500,
+                        easing: 'spring(1, 80, 10, 0)', // Bouncy spring effect
+                        delay: 100
+                    });
+                    revealObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.15 });
+
+        revealElements.forEach(el => revealObserver.observe(el));
     </script>
 </body>
 
